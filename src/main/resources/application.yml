@@ -1,0 +1,46 @@
+spring:
+  datasource:
+    driver-class-name: com.mysql.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/blog?characterEncoding=utf-8&useSSL=false
+    username: root
+    password: 1465957ww.
+    druid:
+      initial-size: 5
+      max-active: 10
+      filters: stat,wall
+      filter:
+        config:
+          enabled: true
+  cache:
+    type: redis
+  #redis配置
+  redis:
+    database: 0
+    host: localhost
+    port: 9880
+    password: 123456
+    lettuce:
+      pool:
+        max-active: 8
+        min-idle: 0
+        max-idle: 8
+        max-wait: -1ms
+    timeout: 10000ms
+
+
+
+# mapper
+mybatis:
+  mapper-locations: classpath:mapper/*.xml
+  configuration:
+    cache-enabled: false
+    map-underscore-to-camel-case: true
+    use-generated-keys: true
+# mapper pagehelper
+##pagehelper:
+##  helperDialect: mysql
+##  reasonable: true
+##  supportMethodsArguments: true
+##  params: count=countSql
+server:
+  port: 8090
