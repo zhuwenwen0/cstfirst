@@ -7,6 +7,7 @@ import cn.edu.aufe.cstfirst.handler.BlogException;
 import cn.edu.aufe.cstfirst.handler.Result;
 import cn.edu.aufe.cstfirst.request.LogonRequest;
 import cn.edu.aufe.cstfirst.request.TokenRequest;
+import cn.edu.aufe.cstfirst.response.LogonResponse;
 import cn.edu.aufe.cstfirst.service.UserService;
 import cn.edu.aufe.cstfirst.util.JwtUtil;
 import io.jsonwebtoken.Claims;
@@ -47,7 +48,10 @@ public class UserController {
             //设置token失效时间
             currentTimeMillis=currentTimeMillis+30*60*1000;
             Date date=new Date(currentTimeMillis);
-            return Result.success(JwtUtil.encryptKey(date,request.getUsername(),request.getPassword()));
+            LogonResponse logonResponse=new LogonResponse();
+            logonResponse.setUsername(request.getUsername());
+            logonResponse.setToken(JwtUtil.encryptKey(date,request.getUsername(),request.getPassword()));
+            return Result.success(logonResponse);
         }else {
             throw new BlogException("登录失败，请重新登录",-1);
         }
