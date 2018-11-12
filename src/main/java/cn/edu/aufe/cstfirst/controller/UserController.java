@@ -1,6 +1,7 @@
 
 package cn.edu.aufe.cstfirst.controller;
 
+import cn.edu.aufe.cstfirst.common.annotation.AuthenticationParam;
 import cn.edu.aufe.cstfirst.common.annotation.SkipLogon;
 import cn.edu.aufe.cstfirst.common.handler.Constant;
 import cn.edu.aufe.cstfirst.handler.BlogException;
@@ -74,7 +75,11 @@ public class UserController {
         Date date=new Date(currentTimeMillis);
         String username = (String) claims.get(Constant.USERNAME);
         String password = (String) claims.get(Constant.PASSWORD);
-        return Result.success(JwtUtil.encryptKey(date,username,password));
+
+        LogonResponse logonResponse=new LogonResponse();
+        logonResponse.setUsername(username);
+        logonResponse.setToken(JwtUtil.encryptKey(date,username,password));
+        return Result.success(logonResponse);
     }
 
 }

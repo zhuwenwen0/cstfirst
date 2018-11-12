@@ -72,7 +72,7 @@ public class BlogController {
      * @param username 用户名
      * @return 删除结果
      */
-    @DeleteMapping("delete")
+    @PostMapping("delete")
     public Result deleteByBlogId(@RequestParam("blogId") Integer blogId, @AuthenticationParam String username) {
         return Result.success(blogService.deleteByBlogId(blogId, username));
     }
@@ -84,7 +84,7 @@ public class BlogController {
      * @param username 用户名
      * @return 修改结果
      */
-    @PutMapping("update")
+    @PostMapping("update")
     public Result updateBlog(@RequestBody Blog blog, @AuthenticationParam String username) {
         return Result.success(blogService.updateBlogByBlogId(blog,username));
     }
