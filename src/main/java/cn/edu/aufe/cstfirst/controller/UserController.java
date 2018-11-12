@@ -1,7 +1,6 @@
 
 package cn.edu.aufe.cstfirst.controller;
 
-import cn.edu.aufe.cstfirst.common.annotation.AuthenticationParam;
 import cn.edu.aufe.cstfirst.common.annotation.SkipLogon;
 import cn.edu.aufe.cstfirst.common.handler.Constant;
 import cn.edu.aufe.cstfirst.handler.BlogException;

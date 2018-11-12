@@ -46,6 +46,11 @@ public interface BlogService {
      */
     Integer updateBlogByBlogId(Blog blog,String username);
 
-
+    /**
+     * 查询所有博客
+     *
+     * @param blogName 博客题目(查询条件)
+     * @return 博客列表
+     */
     List<Blog> listAll(String blogName);
 }

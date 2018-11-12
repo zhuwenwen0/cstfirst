@@ -86,6 +86,18 @@ public class BlogController {
      */
     @PostMapping("update")
     public Result updateBlog(@RequestBody Blog blog, @AuthenticationParam String username) {
+        if (blog.getId() != null && blog.getId()<0){
+            throw new BlogException("当前博客不存在",-1);
+        }
+        if (StringUtils.isBlank(blog.getTitle())){
+            throw new BlogException("博客标题不能为空",-1);
+        }
+        if (StringUtils.isBlank(blog.getContent())){
+            throw new BlogException("博客内容不能为空",-1);
+        }
+        if (StringUtils.isBlank(blog.getTags())){
+            throw new BlogException("博客标签不能为空",-1);
+        }
         return Result.success(blogService.updateBlogByBlogId(blog,username));
     }
 

@@ -16,6 +16,7 @@ import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 
@@ -99,6 +100,7 @@ public class BlogServiceImpl implements BlogService {
         if (blog.getUsername().equals(username)){
             BlogExample blogExample = getBlogExample();
             blogExample.createCriteria().andIdEqualTo(blog.getId());
+            blog.setUpdateTime(LocalDateTime.now());
             try {
                 return blogMapper.updateByExample(blog,blogExample);
             }catch (Exception ex){
