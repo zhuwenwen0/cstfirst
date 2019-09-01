@@ -26,6 +26,15 @@ spring:
         max-idle: 8
         max-wait: -1ms
     timeout: 10000ms
+  thymeleaf:
+    cache: false
+    check-template-location: true
+    suffix: .html
+    prefix: classpath:/templates/
+    enable-spring-el-compiler: true
+    encoding: UTF-8
+
+
 
 
 
@@ -37,10 +46,10 @@ mybatis:
     map-underscore-to-camel-case: true
     use-generated-keys: true
 # mapper pagehelper
-##pagehelper:
-##  helperDialect: mysql
-##  reasonable: true
-##  supportMethodsArguments: true
-##  params: count=countSql
+pagehelper:
+  helperDialect: mysql
+  reasonable: true
+  supportMethodsArguments: true
+  params: count=countSql
 server:
   port: 8090

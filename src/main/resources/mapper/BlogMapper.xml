@@ -8,7 +8,7 @@
     <result column="crate_time" jdbcType="TIMESTAMP" property="crateTime" />
     <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
     <result column="tags" jdbcType="VARCHAR" property="tags" />
-    <result column="state" jdbcType="VARCHAR" property="state" />
+    <result column="state" jdbcType="INTEGER" property="state" />
     <result column="username" jdbcType="VARCHAR" property="username" />
   </resultMap>
   <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="cn.edu.aufe.cstfirst.domian.Blog">
