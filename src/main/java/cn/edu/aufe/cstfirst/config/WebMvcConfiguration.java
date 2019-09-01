@@ -1,5 +1,6 @@
 package cn.edu.aufe.cstfirst.config;
 
+import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
@@ -7,6 +8,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
  * @author zhuwenwen
  * @date 2019/9/1 13:30
  **/
+@Configuration
 public class WebMvcConfiguration implements WebMvcConfigurer{
 
     @Override
