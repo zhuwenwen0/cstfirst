@@ -14,6 +14,6 @@ public class LoginController {
     @GetMapping(value = {"doLogin",""})
     @SkipLogon
     public String login() {
-        return "index";
+        return "login";
     }
 }
