@@ -8,6 +8,8 @@ import cn.edu.aufe.cstfirst.util.JwtUtil;
 import com.sun.org.apache.bcel.internal.generic.IF_ACMPEQ;
 import io.jsonwebtoken.Claims;
 import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.annotation.AnnotatedElementUtils;
 import org.springframework.web.method.HandlerMethod;
@@ -22,6 +24,8 @@ import javax.servlet.http.HttpServletResponse;
  * @date 2018/9/10 23:25
  */
 public class AuthenticationInterceptor extends HandlerInterceptorAdapter {
+
+    private static final Logger logger = LoggerFactory.getLogger(AuthenticationInterceptor.class);
 
     private UserService userService;
 
@@ -51,6 +55,7 @@ public class AuthenticationInterceptor extends HandlerInterceptorAdapter {
         //判断用户是否已经登录
         String token = request.getHeader(Constant.TOKEN);
         if (StringUtils.isBlank(token)) {
+            logger.error("请求url为:{}", request.getRequestURL());
             throw new BlogException("token不存在");
         }
         Claims claims = JwtUtil.decryptKey(token);
