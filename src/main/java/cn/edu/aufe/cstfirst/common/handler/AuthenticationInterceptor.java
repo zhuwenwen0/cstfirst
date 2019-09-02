@@ -49,6 +49,9 @@ public class AuthenticationInterceptor extends HandlerInterceptorAdapter {
         }
         //判断用户是否已经登录
         String token = request.getHeader(Constant.TOKEN);
+        if (StringUtils.isBlank(token)) {
+            throw new BlogException("token不存在");
+        }
         Claims claims = JwtUtil.decryptKey(token);
         if (StringUtils.isNotBlank((String) claims.get(Constant.USERNAME)) && StringUtils.isNotBlank((String) claims.get(Constant.PASSWORD))) {
             Integer logon = userService.logon((String) claims.get(Constant.USERNAME), (String) claims.get(Constant.PASSWORD));

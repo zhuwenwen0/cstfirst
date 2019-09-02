@@ -1,16 +1,4 @@
 spring:
-  datasource:
-    driver-class-name: com.mysql.jdbc.Driver
-    url: jdbc:mysql://localhost:3306/blog?characterEncoding=utf-8&useSSL=false
-    username: root
-    password: 1465957ww.
-    druid:
-      initial-size: 5
-      max-active: 10
-      filters: stat,wall
-      filter:
-        config:
-          enabled: true
   cache:
     type: redis
   #redis配置
@@ -33,6 +21,8 @@ spring:
     prefix: classpath:/templates/
     enable-spring-el-compiler: true
     encoding: UTF-8
+  profiles:
+    active: test
 
 
 
