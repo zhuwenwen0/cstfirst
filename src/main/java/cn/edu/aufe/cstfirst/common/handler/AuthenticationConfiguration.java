@@ -37,9 +37,9 @@ public class AuthenticationConfiguration implements WebMvcConfigurer {
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
         InterceptorRegistration interceptorRegistration;
-//        interceptorRegistration=registry.addInterceptor(authenticationInteceptor);
-//        //拦截配置
-//        interceptorRegistration.addPathPatterns("/**");
+        interceptorRegistration=registry.addInterceptor(authenticationInteceptor);
+        //拦截配置
+        interceptorRegistration.addPathPatterns("/**");
         //排除配置
 //        interceptorRegistration.excludePathPatterns();
     }
