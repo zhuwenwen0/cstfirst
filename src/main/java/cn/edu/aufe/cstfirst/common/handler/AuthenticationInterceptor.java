@@ -5,6 +5,7 @@ import cn.edu.aufe.cstfirst.common.annotation.SkipLogon;
 import cn.edu.aufe.cstfirst.handler.BlogException;
 import cn.edu.aufe.cstfirst.service.UserService;
 import cn.edu.aufe.cstfirst.util.JwtUtil;
+import com.sun.org.apache.bcel.internal.generic.IF_ACMPEQ;
 import io.jsonwebtoken.Claims;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -49,6 +50,9 @@ public class AuthenticationInterceptor extends HandlerInterceptorAdapter {
         }
         //判断用户是否已经登录
         String token = request.getHeader(Constant.TOKEN);
+        if (StringUtils.isBlank(token)) {
+            throw new BlogException("token不存在");
+        }
         Claims claims = JwtUtil.decryptKey(token);
         if (StringUtils.isNotBlank((String) claims.get(Constant.USERNAME)) && StringUtils.isNotBlank((String) claims.get(Constant.PASSWORD))) {
             Integer logon = userService.logon((String) claims.get(Constant.USERNAME), (String) claims.get(Constant.PASSWORD));
