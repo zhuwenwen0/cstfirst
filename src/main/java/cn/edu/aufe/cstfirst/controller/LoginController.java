@@ -1,10 +1,14 @@
 package cn.edu.aufe.cstfirst.controller;
 
 import cn.edu.aufe.cstfirst.common.annotation.SkipLogon;
+import cn.edu.aufe.cstfirst.handler.BlogEnum;
+import cn.edu.aufe.cstfirst.handler.BlogException;
 import cn.edu.aufe.cstfirst.handler.Result;
+import cn.edu.aufe.cstfirst.util.JwtUtil;
 import cn.edu.aufe.cstfirst.vo.LoginVO;
 import com.google.code.kaptcha.Constants;
 import com.google.code.kaptcha.Producer;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -66,6 +70,7 @@ public class LoginController {
                 capStr = code = captchaProducer.createText();
                 bi = captchaProducer.createImage(capStr);
             }
+            //把验证码放入到session中
             session.setAttribute(Constants.KAPTCHA_SESSION_KEY, code);
             out = response.getOutputStream();
             ImageIO.write(bi, "jpg", out);
@@ -88,8 +93,15 @@ public class LoginController {
     @PostMapping("login")
     @SkipLogon
     @ResponseBody
-    public Result login(@RequestBody LoginVO loginVO) {
-
+    public Result login(@RequestBody LoginVO loginVO, HttpServletRequest request) {
+        if (StringUtils.isBlank(loginVO.getValidateCode())) {
+            throw new BlogException(BlogEnum.VALIDATE_CODE_NOT_EXISTS);
+        }
+        String code = request.getSession().getAttribute(Constants.KAPTCHA_SESSION_KEY).toString();
+        if (!StringUtils.equals(loginVO.getValidateCode(), code)) {
+            throw new BlogException(BlogEnum.VALIDATE_CODE_ERROR);
+        }
+        //todo 验证用户名和密码，然后返回token和有效期
         return Result.success();
     }
 

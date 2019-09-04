@@ -25,6 +25,7 @@ function login() {
         type: "POST",
         contentType:  "application/json;charset=utf-8",
         dataType: "json",
+        cache: false,
         data: JSON.stringify({
             "username": username,
             "password": password,

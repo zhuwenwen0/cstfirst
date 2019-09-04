@@ -13,7 +13,12 @@ public  enum BlogEnum {
      */
     SUCCESS(0,"响应成功"),
     ERROR(-1,"响应失败"),
-    FAILURE_UNKNOWN(-1,"系统异常"),
+    FAILURE_UNKNOWN(-10,"系统异常"),
+    /**
+     * 业务异常,从1000开始
+     */
+    VALIDATE_CODE_NOT_EXISTS(1000, "验证码不存在"),
+    VALIDATE_CODE_ERROR(1001, "验证码错误"),
     /**
      *  900000       : HTTP状态码错误
      *  900001-900999: HTTP状态码详细错误
@@ -22,12 +27,14 @@ public  enum BlogEnum {
      */
     FAILURE_HTTP(900000,"HTTP状态码错误"),
     FAILURE(901000,"自定义错误"),
+
     FAILURE_VALIDATION(901001,"参数验证错误"),
     FAILURE_UNAUTHORIZED(901002,"未登录错误"),
     FAILURE_DB(901100,"数据库错误"),
     FAILURE_DB_MYSQL(901101,"MySQL 错误"),
     FAILURE_DB_SQLSERVER(901102,"SQL Server 错误"),
     FAILURE_SERVLET(901200,"Servlet错误")
+
     ;
     private final int code;
     private final String msg;
