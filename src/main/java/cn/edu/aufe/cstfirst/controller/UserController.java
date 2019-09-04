@@ -1,20 +1,20 @@
 
 package cn.edu.aufe.cstfirst.controller;
 
-import cn.edu.aufe.cstfirst.common.annotation.SkipLogon;
 import cn.edu.aufe.cstfirst.common.handler.Constant;
 import cn.edu.aufe.cstfirst.handler.BlogException;
 import cn.edu.aufe.cstfirst.handler.Result;
-import cn.edu.aufe.cstfirst.request.LogonRequest;
 import cn.edu.aufe.cstfirst.request.TokenRequest;
 import cn.edu.aufe.cstfirst.response.LogonResponse;
-import cn.edu.aufe.cstfirst.service.UserService;
 import cn.edu.aufe.cstfirst.util.JwtUtil;
+import cn.edu.aufe.cstfirst.util.LocalDateTimeUtil;
 import io.jsonwebtoken.Claims;
 import org.apache.commons.lang3.StringUtils;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RestController;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 
 /**
@@ -37,15 +37,14 @@ public class UserController {
             throw new BlogException("身份信息不能为空", -1);
         }
         Claims claims = JwtUtil.decryptKey(tokenRequest.getToken());
-        long currentTimeMillis = System.currentTimeMillis();
-        currentTimeMillis = currentTimeMillis + 30 * 60 * 1000;
-        Date date = new Date(currentTimeMillis);
+        LocalDateTime refresh = LocalDateTimeUtil.plusMinute(30);
+        Date expire = LocalDateTimeUtil.localDateTime2Date(refresh);
         String username = (String) claims.get(Constant.USERNAME);
         String password = (String) claims.get(Constant.PASSWORD);
 
         LogonResponse logonResponse = new LogonResponse();
         logonResponse.setUsername(username);
-        logonResponse.setToken(JwtUtil.encryptKey(date, username, password));
+        logonResponse.setToken(JwtUtil.encryptKey(expire, username, password));
         return Result.success(logonResponse);
     }
 
