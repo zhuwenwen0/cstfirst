@@ -1,12 +1,13 @@
 package cn.edu.aufe.cstfirst.controller;
 
 import cn.edu.aufe.cstfirst.common.annotation.SkipLogon;
+import cn.edu.aufe.cstfirst.handler.Result;
+import cn.edu.aufe.cstfirst.vo.LoginVO;
 import com.google.code.kaptcha.Constants;
 import com.google.code.kaptcha.Producer;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.annotation.Resource;
@@ -33,7 +34,7 @@ public class LoginController {
 
     @GetMapping(value = {"doLogin", ""})
     @SkipLogon
-    public String login(Model model) {
+    public String doLogin(Model model) {
         model.addAttribute("captchaEnabled", true);
         model.addAttribute("captchaType", "math");
         return "login";
@@ -82,5 +83,19 @@ public class LoginController {
             }
         }
         return null;
+    }
+
+    @PostMapping("login")
+    @SkipLogon
+    @ResponseBody
+    public Result login(@RequestBody LoginVO loginVO) {
+
+        return Result.success();
+    }
+
+    @GetMapping("index")
+    @SkipLogon
+    public String index() {
+        return "index";
     }
 }

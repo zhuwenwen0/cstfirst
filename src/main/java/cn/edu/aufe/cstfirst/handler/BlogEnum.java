@@ -11,8 +11,8 @@ public  enum BlogEnum {
     /**
      * 返回枚举值
      */
-    SUCCESS(200,"响应成功"),
-    ERROR(0,"响应失败"),
+    SUCCESS(0,"响应成功"),
+    ERROR(-1,"响应失败"),
     FAILURE_UNKNOWN(-1,"系统异常"),
     /**
      *  900000       : HTTP状态码错误
