@@ -19,6 +19,7 @@ public  enum BlogEnum {
      */
     VALIDATE_CODE_NOT_EXISTS(1000, "验证码不存在"),
     VALIDATE_CODE_ERROR(1001, "验证码错误"),
+    USER_ONT_EXISTS(1002, "用户不存在"),
     /**
      *  900000       : HTTP状态码错误
      *  900001-900999: HTTP状态码详细错误

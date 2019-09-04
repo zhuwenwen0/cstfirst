@@ -15,7 +15,7 @@ public interface UserService {
      * @param password 密码
      * @return 登录结果
      */
-    Integer logon(String username,String password);
+    User logon(String username,String password);
 
     /**
      * 根据用户名查找用户

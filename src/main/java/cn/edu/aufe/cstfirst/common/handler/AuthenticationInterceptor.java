@@ -2,6 +2,7 @@
 package cn.edu.aufe.cstfirst.common.handler;
 
 import cn.edu.aufe.cstfirst.common.annotation.SkipLogon;
+import cn.edu.aufe.cstfirst.domian.User;
 import cn.edu.aufe.cstfirst.handler.BlogException;
 import cn.edu.aufe.cstfirst.service.UserService;
 import cn.edu.aufe.cstfirst.util.JwtUtil;
@@ -60,8 +61,8 @@ public class AuthenticationInterceptor extends HandlerInterceptorAdapter {
         }
         Claims claims = JwtUtil.decryptKey(token);
         if (StringUtils.isNotBlank((String) claims.get(Constant.USERNAME)) && StringUtils.isNotBlank((String) claims.get(Constant.PASSWORD))) {
-            Integer logon = userService.logon((String) claims.get(Constant.USERNAME), (String) claims.get(Constant.PASSWORD));
-            if (logon == 1) {
+            User user = userService.logon((String) claims.get(Constant.USERNAME), (String) claims.get(Constant.PASSWORD));
+            if (user != null) {
                 return super.preHandle(request, response, handler);
             } else {
                 throw new BlogException("用户未登录，请重新登录", -1);

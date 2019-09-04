@@ -22,7 +22,7 @@ spring:
     enable-spring-el-compiler: true
     encoding: UTF-8
   profiles:
-    active: test
+    active: dev
 
 
 

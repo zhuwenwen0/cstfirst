@@ -26,12 +26,12 @@ public class UserServiceImpl implements UserService {
      * @param password 密码
      * @return 登录结果
      */
-    @Cacheable(cacheNames = "First",key = "#username")
+    //@Cacheable(cacheNames = "First",key = "#username")
     @Override
-    public Integer logon(String username, String password) {
+    public User logon(String username, String password) {
         UserExample example=new UserExample();
         example.createCriteria().andUsernameEqualTo(username).andPasswordEqualTo(password).andStateEqualTo(1);
-        return userMapper.selectByExample(example).size()>0?1:0;
+        return userMapper.selectByExample(example).stream().findFirst().orElse(null);
     }
 
     /**

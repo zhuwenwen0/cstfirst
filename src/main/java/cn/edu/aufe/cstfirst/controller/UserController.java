@@ -25,38 +25,6 @@ import java.util.Date;
 public class UserController {
 
 
-    @Autowired
-    private UserService userService;
-
-    /**
-     * 登录接口
-     *
-     * @param request 请求信息
-     * @return token信息
-     */
-    @SkipLogon
-    @PostMapping("logon")
-    public Result login(@RequestBody  LogonRequest request){
-        if (StringUtils.isBlank(request.getUsername())){
-            throw new BlogException("用户名不能为空",-1);
-        }
-        if (StringUtils.isBlank(request.getPassword())){
-            throw new BlogException("请填写登录密码",-1);
-        }
-        if (userService.logon(request.getUsername(),request.getPassword()) == 1){
-            long currentTimeMillis = System.currentTimeMillis();
-            //设置token失效时间
-            currentTimeMillis=currentTimeMillis+30*60*1000;
-            Date date=new Date(currentTimeMillis);
-            LogonResponse logonResponse=new LogonResponse();
-            logonResponse.setUsername(request.getUsername());
-            logonResponse.setToken(JwtUtil.encryptKey(date,request.getUsername(),request.getPassword()));
-            return Result.success(logonResponse);
-        }else {
-            throw new BlogException("登录失败，请重新登录",-1);
-        }
-    }
-
     /**
      * 刷新token接口
      *
@@ -64,20 +32,20 @@ public class UserController {
      * @return 新的token
      */
     @PostMapping("refreshToke")
-    public Result refreshToken(@RequestBody TokenRequest tokenRequest){
-        if (StringUtils.isBlank(tokenRequest.getToken())){
-            throw new BlogException("身份信息不能为空",-1);
+    public Result refreshToken(@RequestBody TokenRequest tokenRequest) {
+        if (StringUtils.isBlank(tokenRequest.getToken())) {
+            throw new BlogException("身份信息不能为空", -1);
         }
         Claims claims = JwtUtil.decryptKey(tokenRequest.getToken());
         long currentTimeMillis = System.currentTimeMillis();
-        currentTimeMillis=currentTimeMillis+30*60*1000;
-        Date date=new Date(currentTimeMillis);
+        currentTimeMillis = currentTimeMillis + 30 * 60 * 1000;
+        Date date = new Date(currentTimeMillis);
         String username = (String) claims.get(Constant.USERNAME);
         String password = (String) claims.get(Constant.PASSWORD);
 
-        LogonResponse logonResponse=new LogonResponse();
+        LogonResponse logonResponse = new LogonResponse();
         logonResponse.setUsername(username);
-        logonResponse.setToken(JwtUtil.encryptKey(date,username,password));
+        logonResponse.setToken(JwtUtil.encryptKey(date, username, password));
         return Result.success(logonResponse);
     }
 

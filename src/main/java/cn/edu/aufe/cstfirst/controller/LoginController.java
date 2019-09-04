@@ -1,14 +1,18 @@
 package cn.edu.aufe.cstfirst.controller;
 
 import cn.edu.aufe.cstfirst.common.annotation.SkipLogon;
+import cn.edu.aufe.cstfirst.domian.User;
 import cn.edu.aufe.cstfirst.handler.BlogEnum;
 import cn.edu.aufe.cstfirst.handler.BlogException;
 import cn.edu.aufe.cstfirst.handler.Result;
+import cn.edu.aufe.cstfirst.service.UserService;
 import cn.edu.aufe.cstfirst.util.JwtUtil;
+import cn.edu.aufe.cstfirst.util.LocalDateTimeUtil;
 import cn.edu.aufe.cstfirst.vo.LoginVO;
 import com.google.code.kaptcha.Constants;
 import com.google.code.kaptcha.Producer;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -22,6 +26,8 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
+import java.time.LocalDateTime;
+import java.util.Date;
 
 /**
  * @author zhuwenwen
@@ -35,6 +41,9 @@ public class LoginController {
 
     @Resource(name = "captchaProducerMath")
     private Producer captchaProducerMath;
+
+    @Autowired
+    private UserService userService;
 
     @GetMapping(value = {"doLogin", ""})
     @SkipLogon
@@ -90,6 +99,13 @@ public class LoginController {
         return null;
     }
 
+    /**
+     * 登录接口
+     *
+     * @param loginVO loginVo请求参数
+     * @param request http请求
+     * @return {@link Result}
+     */
     @PostMapping("login")
     @SkipLogon
     @ResponseBody
@@ -101,8 +117,15 @@ public class LoginController {
         if (!StringUtils.equals(loginVO.getValidateCode(), code)) {
             throw new BlogException(BlogEnum.VALIDATE_CODE_ERROR);
         }
-        //todo 验证用户名和密码，然后返回token和有效期
-        return Result.success();
+        // 验证用户名和密码，然后返回token和有效期
+        User user = userService.logon(loginVO.getUsername(), loginVO.getPassword());
+        if (user == null) {
+            throw new BlogException(BlogEnum.USER_ONT_EXISTS);
+        }
+        LocalDateTime tokenExpire = LocalDateTimeUtil.plusMinute(30);
+        Date expire = LocalDateTimeUtil.localDateTime2Date(tokenExpire);
+        String token = JwtUtil.encryptKey(expire, user.getUsername(), user.getPassword());
+        return Result.success(token);
     }
 
     @GetMapping("index")
