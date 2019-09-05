@@ -1,10 +1,12 @@
 package cn.edu.aufe.cstfirst.controller;
 
 import cn.edu.aufe.cstfirst.common.annotation.SkipLogon;
+import cn.edu.aufe.cstfirst.domian.Category;
 import cn.edu.aufe.cstfirst.domian.User;
 import cn.edu.aufe.cstfirst.handler.BlogEnum;
 import cn.edu.aufe.cstfirst.handler.BlogException;
 import cn.edu.aufe.cstfirst.handler.Result;
+import cn.edu.aufe.cstfirst.service.CategoryService;
 import cn.edu.aufe.cstfirst.service.UserService;
 import cn.edu.aufe.cstfirst.util.JwtUtil;
 import cn.edu.aufe.cstfirst.util.LocalDateTimeUtil;
@@ -15,7 +17,10 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.annotation.Resource;
@@ -28,6 +33,7 @@ import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.Date;
+import java.util.List;
 
 /**
  * @author zhuwenwen
@@ -44,6 +50,9 @@ public class LoginController {
 
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private CategoryService categoryService;
 
     @GetMapping(value = {"doLogin", ""})
     @SkipLogon
@@ -130,7 +139,9 @@ public class LoginController {
 
     @GetMapping("index")
     @SkipLogon
-    public String index() {
+    public String index(Model model) {
+        List<Category> categories = categoryService.listCategories();
+        model.addAttribute("categorys", categories);
         return "index";
     }
 }
